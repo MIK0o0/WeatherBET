@@ -1,0 +1,35 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Ustawiamy wyższy indeks warstwy, aby popup był na wierzchu */
+  }
+  
+  .popup {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  
+  .popup h2 {
+    margin-top: 0;
+  }
+  
+  .popup p {
+    margin-bottom: 1rem;
+  }
+  
+  .popup button {
+    background-color: #ccc;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+  }
+  
