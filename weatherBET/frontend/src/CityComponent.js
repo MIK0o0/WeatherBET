@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button, Modal } from 'react-bootstrap';
 import './popupLayout.css'
 
 export default function CityComponent({ cityName, yesCourse, noCourse }) {

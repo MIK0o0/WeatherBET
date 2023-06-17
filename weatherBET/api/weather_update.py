@@ -8,7 +8,7 @@ def download_weather_info(func):
         data = json.load(file)
 
     # Pobieranie wartości "API_NAME" z tabeli "features"
-    features = data['features']
+    features = data
     for feature in features:
         api_name = feature['properties']['API_NAME']
         city_name = feature['properties']['NAME']
@@ -16,13 +16,13 @@ def download_weather_info(func):
 
         response = requests.get(url)
         data = response.json()
-        func(data, city_name)
+        func(data, api_name)
         print(api_name)
 
 
 def calculate_course(chance):
     if chance != 0:
-        return 1/(chance/100)
+        return round(1/(chance/100),2)
     else: 
          return 0
 

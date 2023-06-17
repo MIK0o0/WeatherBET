@@ -21,7 +21,7 @@ class Command(BaseCommand):
         scheduler = BackgroundScheduler()
 
         # Dodajemy zadanie, które będzie wykonywane codziennie o północy
-        scheduler.add_job(download_forecast, 'interval', seconds=300)
+        # scheduler.add_job(download_forecast, 'interval', seconds=300)
 
         # Dodajemy zadanie, które zostanie wykonane raz po uruchomieniu aplikacji
         download_forecast()

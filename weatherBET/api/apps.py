@@ -7,7 +7,7 @@ class ApiConfig(AppConfig):
     name = 'api'
 
     def ready(self): # Import Twojego polecenia
-        from api.models import CityWeather
+        #from api.models import CityWeather
         Command().handle()  # Uruchom Twoje polecenie
 
 
