@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
+from .models import Bet
 
 UserModel = get_user_model()
 
@@ -27,3 +28,31 @@ class UserSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
 		fields = ('email', 'username')
+		
+class BalanceSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = UserModel
+		fields = ['balance']
+	def update(self, instance, validated_data):
+		amount = validated_data['amount']
+		if amount is not None:
+			instance.balance -= amount
+			instance.save()
+		return instance
+
+
+
+class BetSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = Bet
+		fields = ['bet_type', 'city_name', 'amount', 'reward']
+	def create(self, bet_data, user_data):
+		Bet.objects.create(
+			user_id = user_data['user_id'],
+			bet_type = bet_data['bet_type'],
+			city_name = bet_data['city_name'],
+			amount = bet_data['amount'],
+			reward = bet_data['reward'] 
+		)
+	
+	

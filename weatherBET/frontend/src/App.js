@@ -8,16 +8,17 @@ import data from './data/cities.json';
 import CityComponent from "./CityComponent";
 import SaldoCmponent from "./SaldoComponent"
 import markerIcon from "./data/location-pin.png"
-//import './index.css'
 
 
-
-export default function App() {
+export default function App({loggOut}) {
+  //Konfiguracja mapy
   const position = [52.15, 19.48]
   const [markers, setMarkers] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
+  //Informacje o user
   const [yesCourse, setYesCourse] = useState(null);
   const [noCourse, setNoCourse] = useState(null);
+  const [balance, setBalance] = useState(0);
   
 
   const customIcon = L.icon({
@@ -27,6 +28,7 @@ export default function App() {
   });
 
   useEffect(() => {
+    updateBalance();
     setMarkers(data); // Ustaw dane markerów z pliku JSON w stanie komponentu
 
     if (data.length > 0) {
@@ -43,6 +45,17 @@ export default function App() {
       });
     }
   }, []);
+
+  const updateBalance = () => {
+    console.log("Pobieram balance")
+    axiosInstance.get(`/user/balance`)
+      .then(response => {
+        setBalance(response.data)
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
 
   const handleMarkerClick = (marker) => {
     setSelectedMarker(marker); // Ustaw wybrany marker w stanie komponentu
@@ -64,7 +77,7 @@ export default function App() {
     <div className="upper-bar">
         <h1>WeatherBET</h1>
         <div className="slado-component">
-        <SaldoCmponent saldo={"99999"} />
+        <SaldoCmponent saldo={balance.balance} handleClick={loggOut}/>
       </div>
     </div>
     <div className="container">
@@ -100,6 +113,7 @@ export default function App() {
           <CityComponent cityName={selectedMarker.properties.NAME}
           yesCourse={yesCourse}
           noCourse={noCourse}
+          yesClick={updateBalance}
           />
         )}
       </div>

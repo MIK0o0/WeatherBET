@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model, login, logout
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
+from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer, BalanceSerializer, BetSerializer
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 
@@ -65,4 +65,30 @@ class UserView(APIView):
 	def get(self, request):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+	
+class UserBalance(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication,)
+
+    def get(self, request):
+        serializer = BalanceSerializer(request.user)
+        return Response({'balance': serializer.data['balance']}, status=status.HTTP_200_OK)
+    
+class MakeBet(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+
+	def post(self, request):
+		balanceSerializer = BalanceSerializer(request.user)
+		betSerializer = BetSerializer(request.data)
+		if balanceSerializer.data['balance'] - betSerializer.data['amount'] <0:
+			response = {
+            	'error': 'Nie masz pieniedzy biedaku'
+        	}
+			return Response(response, status=404)
+		else:
+			betSerializer.create(balanceSerializer.data, betSerializer.data)
+			balanceSerializer.update(request.user, balanceSerializer.data)
+			return Response(status=status.HTTP_200_OK)
+	
 

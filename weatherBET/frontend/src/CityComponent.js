@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './popupLayout.css'
 
-export default function CityComponent({ cityName, yesCourse, noCourse }) {
+export default function CityComponent({ cityName, yesCourse, noCourse, yesClick, noClick }) {
     const [showPopup, setShowPopup] = useState(false);
 
     const openPopup = () => {
@@ -39,7 +39,7 @@ export default function CityComponent({ cityName, yesCourse, noCourse }) {
             <h3>Czy będzie tam dzisiaj padać?</h3>
             <input type="number" width="5px" step="1" value={value} onChange={handleInputChange} />
             <div className="button-container">
-                <button className="button green" onClick={() => { handleButton1Click(); openPopup(); }}>
+                <button className="button green" onClick={() => { yesClick(); openPopup(); }}>
                     TAK <br /> {yesCourse}
                 </button>
                 <button className="button red" onClick={handleButton2Click}>

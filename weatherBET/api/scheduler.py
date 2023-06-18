@@ -24,7 +24,7 @@ class Command(BaseCommand):
         # scheduler.add_job(download_forecast, 'interval', seconds=300)
 
         # Dodajemy zadanie, które zostanie wykonane raz po uruchomieniu aplikacji
-        download_forecast()
+        # download_forecast()
 
         # Uruchamiamy schedulera
         scheduler.start()

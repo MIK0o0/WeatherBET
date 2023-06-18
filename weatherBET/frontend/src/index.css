@@ -185,3 +185,67 @@
     justify-content: flex-end;
     margin-top: 1rem;
   }
+
+ 
+/*   
+  .login-page,
+  .logout-page {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: sans-serif;
+    color: #333;
+    background-color: #f3dbd7;
+  }
+  
+  .login-page h2,
+  .logout-page h2 {
+    margin-bottom: 1em;
+  }
+  
+  .login-page form,
+  .logout-page button {
+    margin-top: 1em;
+  }
+  
+  .login-page input,
+  .logout-page button {
+    padding: 0.5em 1em;
+    font-size: 1rem;
+    text-align: center;
+    border: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .login-page input[type="email"],
+  .login-page input[type="password"] {
+    width: 200px;
+    margin-bottom: 1em;
+  }
+  
+  .login-page button[type="submit"],
+  .logout-page button {
+    background-color: #4CAF50;
+    color: #fff;
+  }
+  
+  .login-page button[type="submit"]:hover,
+  .logout-page button:hover {
+    background-color: #45a049;
+  }
+  
+  .login-page button[type="submit"]:active,
+  .logout-page button:active {
+    background-color: #3d8b40;
+  }
+  
+  .login-page button[type="submit"]:focus,
+  .logout-page button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #4CAF50;
+  }
+   */

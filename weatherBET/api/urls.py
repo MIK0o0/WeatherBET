@@ -8,5 +8,7 @@ urlpatterns = [
 	path('login', views.UserLogin.as_view(), name='login'),
 	path('logout', views.UserLogout.as_view(), name='logout'),
 	path('user', views.UserView.as_view(), name='user'),
+    path('user/balance', views.UserBalance.as_view(), name='user_balance'),
+    path('user/bet', views.MakeBet.as_view(), name='make_bet'),
 ]
 

@@ -43,3 +43,12 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 	objects = AppUserManager()
 	def __str__(self):
 		return self.username
+	
+class Bet(models.Model):
+	bet_id = models.AutoField(primary_key=True)
+	user_id = models.ForeignKey(AppUser, on_delete=models.CASCADE)
+	date = models.DateField(auto_now_add=True)
+	bet_type = models.BooleanField()
+	city_name = models.ForeignKey(CityWeather, on_delete=models.PROTECT)
+	amount = models.FloatField()
+	reward = models.FloatField()
