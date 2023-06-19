@@ -20,7 +20,14 @@ def download_weather_info(func):
         print(api_name)
 
 
-def calculate_course(chance):
+def calculate_yes_course(chance):
+    if chance != 0:
+        return round(1/(chance/100),2)
+    else: 
+         return 10
+    
+def calculate_no_course(chance):
+    chance = 100 - chance
     if chance != 0:
         return round(1/(chance/100),2)
     else: 
@@ -80,7 +87,7 @@ def send_request_forecast(data, city_name):
         
         forecast_precip = data["forecast"]["forecastday"][0]["day"]["totalprecip_mm"]
         daily_chance_of_rain = data["forecast"]["forecastday"][0]["day"]["daily_chance_of_rain"]
-        update_forecast(city_name, forecast_precip, daily_chance_of_rain, calculate_course(daily_chance_of_rain), calculate_course(100-daily_chance_of_rain)) 
+        update_forecast(city_name, forecast_precip, daily_chance_of_rain, calculate_yes_course(daily_chance_of_rain), calculate_no_course(daily_chance_of_rain)) 
 
 
 def send_request_preciption(data, city_name):
@@ -88,17 +95,3 @@ def send_request_preciption(data, city_name):
         current_precip = data["current"]["precip_mm"]
         update_perciption(city_name, current_precip)
     
-def print_city_weather_records():
-    # Pobranie wszystkich rekordów z tabeli CityWeather
-    city_weather_records = CityWeather.objects.all()
-
-    # Iteracja przez rekordy i wypisanie informacji
-    for record in city_weather_records:
-        print(f"Name: {record.name}")
-        print(f"Was Rain: {record.was_rain}")
-        print(f"Forecast (mm): {record.forecast_mm}")
-        print(f"Precipitation (mm): {record.precip_mm}")
-        print(f"Rain Chance: {record.rain_chance}")
-        print(f"Yes Course: {record.yes_course}")
-        print(f"No Course: {record.no_course}")
-        print("-----------------------------------")

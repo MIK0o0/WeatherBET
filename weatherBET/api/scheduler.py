@@ -1,5 +1,6 @@
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.management.base import BaseCommand
+from apscheduler.triggers.cron import CronTrigger
 
 
 
@@ -13,18 +14,31 @@ class Command(BaseCommand):
         def download_forecast():
             import api.weather_update as wu
             wu.download_weather_info(wu.send_request_forecast)
-            #download_weather_info(send_request_forecast)
-            print("Wykonywanie zadania...")
-            wu.print_city_weather_records()
+            
+        def download_perciption():
+            import api.weather_update as wu
+            wu.download_weather_info(wu.send_request_preciption)
+        
+        def dispose_rewards():
+            import api.tasks as tasks
+            tasks.add_rewards()
+            print(tasks.get_user_rewards_today())
 
         # Inicjalizacja schedulera
         scheduler = BackgroundScheduler()
 
-        # Dodajemy zadanie, które będzie wykonywane codziennie o północy
-        # scheduler.add_job(download_forecast, 'interval', seconds=300)
+        triggerForecast = CronTrigger(minute=1, hour=0)
+        scheduler.add_job(download_forecast, triggerForecast)
 
-        # Dodajemy zadanie, które zostanie wykonane raz po uruchomieniu aplikacji
-        # download_forecast()
+        triggerPerciption = CronTrigger(minute=55, hour=23)
+        scheduler.add_job(download_perciption, triggerPerciption)
+        
+        triggerReward = CronTrigger(minute=5, hour=0)
+        scheduler.add_job(dispose_rewards, triggerReward)
+        
+        ### tasks at start:
+        download_forecast()
+        download_perciption()
 
         # Uruchamiamy schedulera
         scheduler.start()

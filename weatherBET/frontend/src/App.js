@@ -111,9 +111,10 @@ export default function App({loggOut}) {
       <div className="city-component">
         {selectedMarker && (
           <CityComponent cityName={selectedMarker.properties.NAME}
+          cityAPI={selectedMarker.properties.API_NAME}
           yesCourse={yesCourse}
           noCourse={noCourse}
-          yesClick={updateBalance}
+          yesClick={ updateBalance}
           />
         )}
       </div>

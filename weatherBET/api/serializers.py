@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
-from .models import Bet
+from .models import Bet, CityWeather
+from django.core.exceptions import ValidationError
 
 UserModel = get_user_model()
 
@@ -32,8 +33,9 @@ class UserSerializer(serializers.ModelSerializer):
 class BalanceSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = UserModel
-		fields = ['balance']
+		fields = ['user_id','balance']
 	def update(self, instance, validated_data):
+		print("Update")
 		amount = validated_data['amount']
 		if amount is not None:
 			instance.balance -= amount
@@ -42,15 +44,23 @@ class BalanceSerializer(serializers.ModelSerializer):
 
 
 
-class BetSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = Bet
-		fields = ['bet_type', 'city_name', 'amount', 'reward']
+class BetSerializer(serializers.Serializer):
+	bet_type = serializers.BooleanField()
+	city_name = serializers.CharField()
+	amount = serializers.FloatField()
+	reward = serializers.FloatField()
+	
 	def create(self, bet_data, user_data):
+		print("create")
+		user_id = user_data['user_id']
+		app_user = UserModel.objects.get(user_id=user_id)
+		city_name = bet_data['city_name']
+		city_weather = CityWeather.objects.get(name=city_name)
+
 		Bet.objects.create(
-			user_id = user_data['user_id'],
+			user_id = app_user,
 			bet_type = bet_data['bet_type'],
-			city_name = bet_data['city_name'],
+			city_name = city_weather,
 			amount = bet_data['amount'],
 			reward = bet_data['reward'] 
 		)

@@ -1,70 +1,29 @@
 import json
-from api.models import CityWeather
+from api.models import Bet
 import requests
+from datetime import date
+from django.db.models import F
+from django.contrib.auth import get_user_model
 
-def download_weather_info():
-    # Otwieranie pliku JSON
-    with open('data/cities.json') as file:
-        data = json.load(file)
+def add_rewards():
+    User = get_user_model()
+    queryset = get_user_rewards_today()
 
-    # Pobieranie wartości "API_NAME" z tabeli "features"
-    features = data['features']
-    for feature in features:
-        api_name = feature['properties']['API_NAME']
-        print(api_name)
-
-def calculate_course(chance):
-    return 1/(chance/100)
-
-
-
-def update_perciption(city_id, name, forecast_mm, rain_chance, yes_course, no_course):
-    try:
-        # Sprawdzenie, czy istnieje rekord o podanym name
-        record = CityWeather.objects.get(name=name)
+    for item in queryset:
+        user_id = item['user_id']
+        reward = item['reward']
         
-        # Aktualizacja wartości dla istniejącego rekordu
-        record.forecast_mm = forecast_mm
-        record.rain_chance = rain_chance
-        record.yes_course = yes_course
-        record.no_course = no_course
-        
-        # Zapisanie zmian
-        record.save()
-    except CityWeather.DoesNotExist:
-        # Dodanie nowego rekordu, jeśli nie istnieje rekord o podanym name
-        CityWeather.objects.create(
-            city_id=city_id,
-            name=name,
-            was_rain=False,
-            forecast_mm=forecast_mm,
-            precip_mm=0,
-            rain_chance=rain_chance,
-            yes_course=yes_course,
-            no_course=no_course
-        )
+        try:
+            user = User.objects.get(user_id=user_id)
+            user.balance += reward
+            user.save()
+        except User.DoesNotExist:
+            pass
 
-def update_perciption(city_id, name, precip_mm):
-    try:
-        # Sprawdzenie, czy istnieje rekord o podanym name
-        record = CityWeather.objects.get(name=name)
-        
-        # Aktualizacja wartości dla istniejącego rekordu
-        record.precip_mm= precip_mm
-        
-        # Zapisanie zmian
-        record.save()
-    except CityWeather.DoesNotExist:
-        # Dodanie nowego rekordu, jeśli nie istnieje rekord o podanym name
-        CityWeather.objects.create(
-            city_id=city_id,
-            name=name,
-            was_rain=False,
-            forecast_mm=0,
-            precip_mm=precip_mm,
-            rain_chance=0,
-            yes_course=0,
-            no_course=0
-        )
-        
-    
+
+
+def get_user_rewards_today():
+    today = date.today()
+    user_rewards = Bet.objects.filter(date=today, city_name__was_rain=F('bet_type'), city_name__id=F('city_name')).values('user_id', 'reward')
+    return user_rewards
+

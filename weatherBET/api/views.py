@@ -8,6 +8,8 @@ from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerial
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 
+
+
 def get_course_by_city(request, city_name):
     try:
         city = CityWeather.objects.get(name=city_name)
@@ -66,29 +68,38 @@ class UserView(APIView):
 		serializer = UserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 	
-class UserBalance(APIView):
-    permission_classes = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication,)
 
-    def get(self, request):
-        serializer = BalanceSerializer(request.user)
-        return Response({'balance': serializer.data['balance']}, status=status.HTTP_200_OK)
-    
+class UserBalance(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+	def get(self, request):
+		serializer = BalanceSerializer(request.user)
+		return Response({'balance': serializer.data['balance']}, status=status.HTTP_200_OK)
+	
+
 class MakeBet(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
 
 	def post(self, request):
 		balanceSerializer = BalanceSerializer(request.user)
-		betSerializer = BetSerializer(request.data)
+		betSerializer = BetSerializer(data=request.data)
+		
+		if not betSerializer.is_valid(raise_exception=True):
+			return Response(status=status.HTTP_400_BAD_REQUEST)
 		if balanceSerializer.data['balance'] - betSerializer.data['amount'] <0:
 			response = {
-            	'error': 'Nie masz pieniedzy biedaku'
+				'header' : 'ERROR',
+            	'message': 'Nie masz pieniedzy biedaku'
         	}
-			return Response(response, status=404)
+			return Response(response, status=status.HTTP_400_BAD_REQUEST)
 		else:
-			betSerializer.create(balanceSerializer.data, betSerializer.data)
-			balanceSerializer.update(request.user, balanceSerializer.data)
-			return Response(status=status.HTTP_200_OK)
+			betSerializer.create(betSerializer.data, balanceSerializer.data)
+			balanceSerializer.update(request.user, betSerializer.data)
+			response = {
+				'header' : 'SUCESS',
+            	'message': 'Bet postawiony'
+        	}
+			return Response(response, status=status.HTTP_200_OK)
 	
 

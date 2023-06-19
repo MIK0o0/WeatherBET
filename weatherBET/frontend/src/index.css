@@ -83,9 +83,7 @@
     align-items: center;
     justify-content: center;
     font-family: 'Roboto', sans-serif;
-    /* Wybierz preferowaną czcionkę */
     color: #f0c808;
-    /* Wybierz preferowany odcień żółtego */
   }
 
   .saldo-component {
@@ -155,9 +153,9 @@
     font-size: 1.2rem;
     margin-bottom: 1rem;
   }
-
   .city-component button {
     display: inline-block;
+    flex: 1; 
     padding: 0.5em 1em;
     font-size: 1.2rem;
     font-weight: bold;
@@ -171,81 +169,36 @@
     transition: background-color 0.3s ease;
     margin-right: 1rem;
   }
-
+  
   .city-component button.red {
     background-color: #FF0000;
   }
-
+  
   .city-component button.green {
     background-color: #00FF00;
   }
-
+  
   .button-container {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; 
     margin-top: 1rem;
   }
-
  
-/*   
-  .login-page,
-  .logout-page {
-    height: 100vh;
+  .city-component {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    font-family: sans-serif;
-    color: #333;
-    background-color: #f3dbd7;
   }
   
-  .login-page h2,
-  .logout-page h2 {
-    margin-bottom: 1em;
+  .city-component .color-container {
+    background: linear-gradient(to bottom, transparent 50%, #c4a300 50%), linear-gradient(#c4a300, #c4a300);
+    background-position: center;
+    background-size: 100% 100%; 
+    background-repeat: no-repeat;
+    border-radius: 10px; 
+    border: 2px solid black; 
+    padding: 10px; 
   }
   
-  .login-page form,
-  .logout-page button {
-    margin-top: 1em;
-  }
   
-  .login-page input,
-  .logout-page button {
-    padding: 0.5em 1em;
-    font-size: 1rem;
-    text-align: center;
-    border: none;
-    border-radius: 0.25rem;
-    transition: background-color 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .login-page input[type="email"],
-  .login-page input[type="password"] {
-    width: 200px;
-    margin-bottom: 1em;
-  }
-  
-  .login-page button[type="submit"],
-  .logout-page button {
-    background-color: #4CAF50;
-    color: #fff;
-  }
-  
-  .login-page button[type="submit"]:hover,
-  .logout-page button:hover {
-    background-color: #45a049;
-  }
-  
-  .login-page button[type="submit"]:active,
-  .logout-page button:active {
-    background-color: #3d8b40;
-  }
-  
-  .login-page button[type="submit"]:focus,
-  .logout-page button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px #4CAF50;
-  }
-   */

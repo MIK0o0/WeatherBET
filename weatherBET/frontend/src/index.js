@@ -15,6 +15,7 @@ const MainApp = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [wrongPassword, setWrongPassword] = useState(false)
 
   useEffect(() => {
     axiosInstance.get("/user")
@@ -64,8 +65,13 @@ const MainApp = () => {
         email: email,
         password: password
       }
-    ).then(function(res) {
+    ).then(res => {
       setCurrentUser(true);
+      setWrongPassword(false)
+    })
+    .catch(error => {
+      console.error(error)
+      setWrongPassword(true)
     });
   }
 
@@ -122,6 +128,7 @@ const MainApp = () => {
                 value={password}
                 onChange={e => setPassword(e.target.value)}
               />
+              <h2 style={{ color: 'red' }}>{wrongPassword ? 'Złe dane!' : ''}</h2>
               <button type="submit">Log in</button>
             </form>
           )}

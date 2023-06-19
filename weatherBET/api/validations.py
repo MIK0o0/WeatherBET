@@ -35,8 +35,3 @@ def validate_password(data):
     if not password:
         raise ValidationError('a password is needed')
     return True
-
-def validate_bet(data, user):
-    type = data['type']
-    amount = data['amount']
-    city = data['city']
