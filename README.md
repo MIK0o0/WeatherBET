@@ -1,4 +1,5 @@
 WeatherBET :partly_sunny: :umbrella:
+
 WeatherBET to aplikacja, która umożliwia stawianie zakładów na to, czy w danym dniu w danym mieście spadnie deszcz. Ciesz się zabawą, emocjami i prognozami pogody!
 
 :question: Jak to działa?
